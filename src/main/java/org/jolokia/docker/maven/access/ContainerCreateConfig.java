@@ -44,7 +44,14 @@ public class ContainerCreateConfig {
     }
 
     public ContainerCreateConfig entrypoint(String entrypoint) {
-        return add("Entrypoint", entrypoint);
+        if (entrypoint != null) {
+            JSONArray a = new JSONArray();
+            for (String s : EnvUtil.splitWOnSpaceWithEscape(entrypoint)) {
+                a.put(s);
+            }
+            createConfig.put("Entrypoint", a);
+        }
+        return this;
     }
 
     public ContainerCreateConfig environment(Map<String, String> env) throws IllegalArgumentException {
